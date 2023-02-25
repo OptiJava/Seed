@@ -9,5 +9,11 @@
     "link": "https://github.com/OptiJava/Seed",
     "dependencies": {
       "mcdreforged": ">=2.2.0"
-    }
+    },
+
+    "archive_name": "seed-v{version}",
+	"resources": [
+		"lang",
+		"LICENSE"
+	]
 }

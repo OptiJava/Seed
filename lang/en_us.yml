@@ -1,0 +1,4 @@
+seed:
+  help_msg: Get world seed quickly!
+  get_seed: 'Seed:'
+  copy_to_clipboard: Click to copy to clipboard

@@ -9,7 +9,7 @@ def on_load(server: ServerInterface, old_module):
     global server_inst
     server_inst = server
     server.register_command(Literal('!!seed').runs(run))
-    server.register_help_message('!!seed', 'get world seed')
+    server.register_help_message('!!seed', server.tr('seed.help_msg'))
 
 
 def run():
@@ -24,5 +24,5 @@ def on_info(server: ServerInterface, info: Info):
     if info.content.startswith('Seed: [') and get_seed:
         seed = info.content.split('[')[1].split(']')[0]
         server.execute(
-            'tellraw @a [{"text":"服务器种子: [","color":"yellow"},{"text":"' + seed + '","color":"green","insertion":"' + seed + '","clickEvent":{"action":"copy_to_clipboard","value":"'+ seed + '"},"hoverEvent":{"action":"show_text","value":"点击复制到剪贴板"}},{"text":"]","color":"yellow"}]')
+            'tellraw @a [{"text":"' + server_inst.tr('seed.get_seed') + ' [","color":"yellow"},{"text":"' + seed + '","color":"green","insertion":"' + seed + '","clickEvent":{"action":"copy_to_clipboard","value":"'+ seed + '"},"hoverEvent":{"action":"show_text","value":"' + server_inst.tr('seed.copy_to_clipboard') + '"}},{"text":"]","color":"yellow"}]')
         get_seed = False
