@@ -1,0 +1,13 @@
+{
+    "id": "seed",
+    "version": "1.0.0",
+    "name": "Seed",
+    "description": "Get world seed quickly!",
+    "author": [
+        "OptiJava"
+    ],
+    "link": "https://github.com/OptiJava/Seed",
+    "dependencies": {
+      "mcdreforged": ">=2.2.0"
+    }
+}
