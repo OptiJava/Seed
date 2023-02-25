@@ -30,7 +30,7 @@ def run():
     server_inst.execute('seed')
 
 
-
+# reference https://github.com/MCDReforged/Seed
 def on_info(server: ServerInterface, info: Info):
     global get_seed
     if info.content.startswith('Seed: [') and get_seed:
