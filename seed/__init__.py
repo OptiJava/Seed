@@ -1,44 +1,67 @@
+import time
+from typing import Optional
+
 from mcdreforged.api.all import *
+from parse import parse
 
-server_inst: ServerInterface
-
-get_seed = False
-
-seed: str = '0'
+getting_seed = False
+seed: Optional[str] = None
+config: dict = None
 
 
-def on_load(server: ServerInterface, old_module):
-    global server_inst
-    server_inst = server
+def on_load(server: PluginServerInterface, old_module):
+    global config
+    config = server.load_config_simple(default_config={
+        'command': 'seed',
+        'parser': 'Seed: [{}]'
+    })
 
-    server.register_command(Literal('!!seed').runs(run))
+    if server.is_server_running():
+        get_seed(server)
+    server.register_command(Literal('!!seed').runs(print_seed))
     server.register_help_message('!!seed', server.tr('seed.help_msg'))
 
 
-def run():
-    global get_seed, seed
-    if seed == '0':
-        get_seed = True
-        server_inst.execute('seed')
+def on_server_startup(server: PluginServerInterface):
+    if seed is None:
+        get_seed(server)
+
+
+@new_thread('seed')
+def get_seed(server: PluginServerInterface):
+    global seed, getting_seed
+    if getting_seed:
+        return
     else:
-        print_seed(seed)
+        getting_seed = True
+    if seed is None:
+        server.execute(config['command'])
+        for _ in range(50):
+            if seed is None:
+                time.sleep(0.1)
+            else:
+                getting_seed = False
+                return
+    server.logger.error(server.tr('seed.failed'))
+    getting_seed = False
 
 
-# reference code https://github.com/MCDReforged/Seed
 def on_info(server: ServerInterface, info: Info):
-    global get_seed, seed
-    if info.content.startswith('Seed: [') and get_seed:
-        seed = info.content.split('[')[1].split(']')[0]
-        print_seed(seed)
-        get_seed = False
+    global getting_seed, seed
+    if getting_seed:
+        result = parse(config['parser'], info.content)
+        if result:
+            seed = result[0]
 
 
-def print_seed(value: str):
-    server_inst.tell('@a',
-                     RTextList(
-                         RText(server_inst.tr('seed.get_seed'), color=RColor.yellow),
-                         RText('[', color=RColor.white),
-                         RText(value, color=RColor.green, styles=RStyle.underlined).set_hover_text(
-                             server_inst.tr('seed.copy_to_clipboard')).set_click_event(RAction.copy_to_clipboard, value),
-                         RText(']', color=RColor.white))
-                     )
+def print_seed(source: CommandSource):
+    if seed is None:
+        source.reply(RText(RTextMCDRTranslation('seed.failed'), RColor.red))
+    source.reply(RTextList(
+        RTextMCDRTranslation('seed.get_seed', RColor.yellow),
+        RText('[', RColor.white),
+        RText(seed, RColor.green, RStyle.underlined).
+            h(RTextMCDRTranslation('seed.copy_to_clipboard')).
+            c(RAction.copy_to_clipboard, seed),
+        RText(']', RColor.white))
+    )

@@ -1,4 +1,6 @@
 seed:
-  help_msg: Get world seed quickly!
-  get_seed: 'Seed:'
+  help_msg: Get world seed
+  get_seed: 'Seed: '
   copy_to_clipboard: Click to copy to clipboard
+  failed: Failed to get seed
+  
