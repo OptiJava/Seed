@@ -12,8 +12,18 @@
 - `command`: Command to get seed in console
 - `parser`: Parser for the command result
 
+Default config file:
+```
+{
+    'command': 'seed',
+    'parser': 'Seed: [{}]'
+}
+```
+
 The default configuration already supports most server software (without plugin/mods).
 
-## More
+## Thanks to
 
-This plugn was inspired by [`MCDReforged/Seed`](https://github.com/MCDReforged/Seed)
+This plugin was inspired by [`MCDReforged/Seed`](https://github.com/MCDReforged/Seed)
+
+Thanks to @[alex3236](https://github.com/alex3236) for refactoring the code（（

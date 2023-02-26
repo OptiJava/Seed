@@ -46,7 +46,7 @@ def get_seed(server: PluginServerInterface):
     getting_seed = False
 
 
-def on_info(server: ServerInterface, info: Info):
+def on_info(server: PluginServerInterface, info: Info):
     global getting_seed, seed
     if getting_seed:
         result = parse(config['parser'], info.content)
@@ -61,7 +61,7 @@ def print_seed(source: CommandSource):
         RTextMCDRTranslation('seed.get_seed', RColor.yellow),
         RText('[', RColor.white),
         RText(seed, RColor.green, RStyle.underlined).
-            h(RTextMCDRTranslation('seed.copy_to_clipboard')).
-            c(RAction.copy_to_clipboard, seed),
+        h(RTextMCDRTranslation('seed.copy_to_clipboard')).
+        c(RAction.copy_to_clipboard, seed),
         RText(']', RColor.white))
     )
