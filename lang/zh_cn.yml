@@ -1,4 +1,6 @@
 seed:
-  help_msg: 更快速的获取服务器种子！
-  get_seed: 服务器种子：
+  help_msg: 获取世界种子
+  get_seed: 种子：
   copy_to_clipboard: 点击复制到剪贴板
+  failed: 无法获取种子
+  
