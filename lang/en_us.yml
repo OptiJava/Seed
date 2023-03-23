@@ -1,6 +1,7 @@
 seed:
-  help_msg: Get world seed
+  help_msg: 'Get world seed without op permission.'
   get_seed: 'Seed: '
-  copy_to_clipboard: Click to copy to clipboard
-  failed: Failed to get seed
+  copy_to_clipboard: 'Click to copy to clipboard'
+  failed: 'Failed to get seed!'
+  not_started: 'Server is not running!'
   

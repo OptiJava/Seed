@@ -1,14 +1,17 @@
 {
     "id": "seed",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "name": "Seed",
-    "description": "Get world seed without op permission.",
+    "description": {
+		"en_us": "Get world seed without op permission.",
+		"zh_cn": "在没有op权限的情况下获取种子"
+	},
     "author": [
       "OptiJava"
     ],
     "link": "https://github.com/OptiJava/Seed",
     "dependencies": {
-      "mcdreforged": ">=2.2.0"
+      "mcdreforged": ">=2.5.0"
     },
 
     "archive_name": "seed-v{version}",

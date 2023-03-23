@@ -6,11 +6,12 @@ from parse import parse
 
 getting_seed = False
 seed: Optional[str] = None
-config: dict = None
+config: dict = {}
 
 
 def on_load(server: PluginServerInterface, old_module):
     global config
+    
     config = server.load_config_simple(default_config={
         'command': 'seed',
         'parser': 'Seed: [{}]'
@@ -18,8 +19,12 @@ def on_load(server: PluginServerInterface, old_module):
 
     if server.is_server_running():
         get_seed(server)
-    server.register_command(Literal('!!seed').runs(print_seed))
-    server.register_help_message('!!seed', server.tr('seed.help_msg'))
+        
+    server.register_command(
+        Literal('!!seed')
+        .runs(lambda src: print_seed(src, server))
+    )
+    server.register_help_message('!!seed', RTextMCDRTranslation('seed.help_msg'))
 
 
 def on_server_startup(server: PluginServerInterface):
@@ -27,9 +32,10 @@ def on_server_startup(server: PluginServerInterface):
         get_seed(server)
 
 
-@new_thread('seed')
+@new_thread('seed - get')
 def get_seed(server: PluginServerInterface):
-    global seed, getting_seed
+    global getting_seed
+    
     if getting_seed:
         return
     else:
@@ -42,26 +48,34 @@ def get_seed(server: PluginServerInterface):
             else:
                 getting_seed = False
                 return
-    server.logger.error(server.tr('seed.failed'))
+            
+    server.logger.error(RTextMCDRTranslation('seed.failed'))
     getting_seed = False
 
 
 def on_info(server: PluginServerInterface, info: Info):
-    global getting_seed, seed
+    global seed
+    
     if getting_seed:
         result = parse(config['parser'], info.content)
         if result:
             seed = result[0]
 
 
-def print_seed(source: CommandSource):
+def print_seed(source: CommandSource, server: PluginServerInterface):
+    if not server.is_server_running():
+        source.reply(RTextMCDRTranslation('seed.not_started').set_color(RColor.red))
+        return
+    
     if seed is None:
-        source.reply(RText(RTextMCDRTranslation('seed.failed'), RColor.red))
+        source.reply(RTextMCDRTranslation('seed.failed').set_color(RColor.red))
+        return
+        
     source.reply(RTextList(
-        RTextMCDRTranslation('seed.get_seed', RColor.yellow),
-        RText('[', RColor.white),
-        RText(seed, RColor.green, RStyle.underlined).
+        RTextMCDRTranslation('seed.get_seed').set_color(RColor.yellow),
+        RText('['),
+        RText(seed, color=RColor.green, styles=RStyle.underlined).
         h(RTextMCDRTranslation('seed.copy_to_clipboard')).
         c(RAction.copy_to_clipboard, seed),
-        RText(']', RColor.white))
+        RText(']'))
     )

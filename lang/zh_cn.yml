@@ -1,6 +1,7 @@
 seed:
-  help_msg: 获取世界种子
-  get_seed: 种子：
-  copy_to_clipboard: 点击复制到剪贴板
-  failed: 无法获取种子
+  help_msg: '在没有op权限的情况下获取种子'
+  get_seed: '种子：'
+  copy_to_clipboard: '点击复制到剪贴板'
+  failed: '无法获取种子'
+  not_started: '服务器未启动'
   

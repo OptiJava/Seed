@@ -1,6 +1,5 @@
 # Seed
-
-!!seed to get world seed.
+> Get world seed without op permission.
 
 ## Preview
 
